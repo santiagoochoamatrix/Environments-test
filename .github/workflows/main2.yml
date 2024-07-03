@@ -123,6 +123,8 @@ jobs:
     deploy_prod:
       name: deploy
       needs: [Build]
+      environment: 
+        name: Production
       if: |
        (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/releases/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
        (github.event_name == 'push' && github.ref == 'refs/heads/master')
