@@ -107,7 +107,7 @@ jobs:
      name: deploy
      needs: [Build]
      environment:
-        name: ${{ contains(github.ref, 'heads/feature/') || contains(github.ref, 'heads/releases/') || contains(github.ref, 'heads/hotfix/') || contains(github.ref, 'heads/develop/') ? env.dev_env : env.prod_env }}
+       name: ${{ contains(github.ref, 'heads/feature/') || contains(github.ref, 'heads/releases/') || contains(github.ref, 'heads/hotfix/') ? env.dev_env : env.prod_env }}
      if: |
       (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/releases/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
       github.event_name == 'push'
