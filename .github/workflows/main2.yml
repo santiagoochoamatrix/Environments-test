@@ -113,11 +113,28 @@ jobs:
       github.event_name == 'push'
      runs-on: ubuntu-latest
      steps:
+        - name: Determine environment
+          id: set-env
+          run: |
+            if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+              echo "env=prod" >> $GITHUB_ENV
+            elif [[ "${GITHUB_REF}" == "refs/heads/developer" ]]; then
+              echo "env=dev" >> $GITHUB_ENV
+            else
+              echo "env=dev" >> $GITHUB_ENV
+          shell: bash
+  
         - name: config_microservice
-          run: echo config_microservice
+          run: echo "config_microservice for environment: ${{ env.env }}"
+  
         - name: make deploy_codebuild
-          run: echo make deploy_codebuild
+          run: echo "make deploy_codebuild for environment: ${{ env.env }}"
+  
         - name: terraform_init
-          run: echo terraform_init
+          run: echo "terraform_init for environment: ${{ env.env }}"
+  
         - name: terraform_apply
-          run:  echo terraform_apply
+          run: echo "terraform_apply for environment: ${{ env.env }}"
+    environment:
+      name: ${{ env.env }}
+      url: ${{ secrets.ENVIRONMENT_URL }}
