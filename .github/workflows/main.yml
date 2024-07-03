@@ -7,6 +7,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+    VARIABLE_DEV=${{ env.VARIABLE_DEV }}
+
 jobs:
   Build:
     runs-on: ubuntu-latest
@@ -43,7 +46,7 @@ jobs:
             
   DeployProd:
     name: Deploy to Production 
-    needs: [aprob_QA]
+    needs: [aprobQA]
     runs-on: ubuntu-latest
     environment: 
       name: Production
