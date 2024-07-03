@@ -7,9 +7,6 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-env:
-    VARIABLE_DEV=${{ env.VARIABLE_DEV }}
-
 jobs:
   Build:
     runs-on: ubuntu-latest
@@ -31,7 +28,6 @@ jobs:
       - name: Deploy
         run: |
           echo "el secreto de ambiente dev es " ${{ secrets.SECRET_DEV }}
-          echo "la variable del ambiente dev es " ${{ env.VARIABLE_DEV }}
 
   aprobQA:
     name: Deploy to Staging 
