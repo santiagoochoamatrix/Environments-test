@@ -99,8 +99,8 @@ jobs:
           run: echo deploy_image
 
     deploy:
-     name: Build
-     needs: [Test-unit]
+     name: deploy
+     needs: [Build]
      if: |
       (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/releases/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
       github.event_name == 'push'
