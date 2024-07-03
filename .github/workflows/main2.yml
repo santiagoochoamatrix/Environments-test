@@ -48,12 +48,10 @@ jobs:
         - name: Deploy
           run: echo Snyk - Code
 
-    Test-unit:
+    Test-unit-pr:
       name: Test-sonar
       needs: [Snyk-Code, Snyk-IaC]
-      if: |
-        (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
-        github.event_name == 'pull_request'
+      if: ${{ github.event_name == 'pull_request' }}
       runs-on: ubuntu-latest
       steps:
          - name: Test unit
@@ -63,10 +61,56 @@ jobs:
       
     Snyk-Open-Source:
      name: Snyk - Open Source
-     needs: [Test-unit]
+     needs: [Test-unit-pr]
      if: ${{ github.event_name == 'pull_request' }}
      runs-on: ubuntu-latest
      steps:
        - name: Deploy
          run:  echo Snyk - Open Source
-      
+
+    
+    Test-unit:
+       name: Test-sonar
+       if: |
+        (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/releases/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
+        github.event_name == 'push'
+       runs-on: ubuntu-latest
+       steps:
+          - name: Test unit
+            run: echo Test unit
+          - name: Sonar Scan Code
+            run: echo Scan Code
+
+    Build:
+     name: Build
+     needs: [Test-unit]
+     if: |
+      (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/releases/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
+      github.event_name == 'push'
+     runs-on: ubuntu-latest
+     steps:
+        - name: deploy_role
+          run: echo deploy_role
+        - name: build_microservice
+          run: echo build_microservice
+        - name: deploy_registry
+          run: echo deploy_registry
+        - name: deploy_image
+          run: echo deploy_image
+
+    deploy:
+     name: Build
+     needs: [Test-unit]
+     if: |
+      (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/releases/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
+      github.event_name == 'push'
+     runs-on: ubuntu-latest
+     steps:
+        - name: config_microservice
+          run: echo config_microservice
+        - name: make deploy_codebuild
+          run: echo make deploy_codebuild
+        - name: terraform_init
+          run: echo terraform_init
+        - name: terraform_apply
+          run: terraform_apply
