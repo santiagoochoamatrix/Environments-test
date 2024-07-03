@@ -20,7 +20,7 @@ on:
       - main
 # despliegue a demanda
   workflow_dispatch:
-
+    
 jobs:
     GitFlow-Check:
       name: GitFlow check 
@@ -30,7 +30,7 @@ jobs:
         - name: Deploy
           run: echo gitflow_check
             
-     Snyk-IaC:
+    Snyk-IaC:
       name: Snyk  IaC
       if: ${{ github.event_name == 'pull_request' }}
       runs-on: ubuntu-latest
