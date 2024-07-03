@@ -20,6 +20,11 @@ on:
       - main
 # despliegue a demanda
   workflow_dispatch:
+
+env:
+    dev_env: "dev"
+    prod_env: "Production"
+      
     
 jobs:
     GitFlow-Check:
@@ -101,6 +106,8 @@ jobs:
     deploy:
      name: deploy
      needs: [Build]
+     environment:
+        name: ${{ contains(github.ref, 'heads/feature/') || contains(github.ref, 'heads/releases/') || contains(github.ref, 'heads/hotfix/') || contains(github.ref, 'heads/develop/') ? env.dev_env : env.prod_env }}
      if: |
       (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/releases/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
       github.event_name == 'push'
