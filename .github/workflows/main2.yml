@@ -113,4 +113,4 @@ jobs:
         - name: terraform_init
           run: echo terraform_init
         - name: terraform_apply
-          run: terraform_apply
+          run:  echo terraform_apply
