@@ -47,36 +47,25 @@ jobs:
       steps:
         - name: Deploy
           run: echo Snyk - Code
+
+    Test-unit:
+      name: Snyk  Code
+      if: |
+        (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
+        github.event_name == 'pull_request'
+      runs-on: ubuntu-latest
+      steps:
+         - name: Test unit
+           run: echo Test unit
+         - name: Sonar Scan Code
+           run: echo Scan Code
       
+    Snyk-Open-Source:
+     name: Snyk - Open Source
+     needs: [GitFlow-Check]
+     if: ${{ github.event_name == 'pull_request' }}
+     runs-on: ubuntu-latest
+     steps:
+       - name: Deploy
+         run: Snyk - Open Source
       
-        #   - name: Test unit
-        #     if: |
-        #       (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
-        #       github.event_name == 'pull_request'
-        #     env:
-        #       AWS_DEFAULT_REGION: ${{inputs.AWS_DEFAULT_REGION}}
-        #     shell: bash
-        #     run: make test_unit_backend
-      
-        #   - name: Sonar - Scan Code
-        #     if: |
-        #       (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
-        #       github.event_name == 'pull_request'
-        #     env:
-        #       AWS_DEFAULT_REGION: ${{inputs.AWS_DEFAULT_REGION}}
-        #       PR_NUMBER: ${{ github.event.pull_request.number }}
-        #       GITHUB_EVENT_NAME: ${{ github.event_name }}
-        #       GITHUB_HEAD_REF: ${{ github.event.pull_request.head.ref }}
-        #       GITHUB_BASE_REF: ${{ github.event.pull_request.base.ref }}
-        #       GITHUB_REF_NAME: ${{ github.ref }}
-        #     shell: bash
-        #     run: make quality_code_backend
-      
-        #   - name: Snyk - Open Source
-        #     if: ${{ github.event_name == 'pull_request' }}
-        #     env:
-        #       GITHUB_REPOSITORY: ${{inputs.GITHUB_REPOSITORY}}
-        #       GITHUB_BASE_REF: ${{inputs.GITHUB_BASE_REF}}
-        #       GITHUB_HEAD_REF: ${{inputs.GITHUB_HEAD_REF}}
-        #     shell: bash
-        #     run: make snyk_test
