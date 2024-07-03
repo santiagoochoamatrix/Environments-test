@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Deploy
         run: |
-          echo "el secreto de ambiente dev es " ${{ secrets.SECRET_DEV}}
+          echo "el secreto de ambiente dev es " ${{ secrets.SECRET_DEV }}
           echo "la variable del ambiente dev es " ${{ env.VARIABLE_DEV }}
 
     
