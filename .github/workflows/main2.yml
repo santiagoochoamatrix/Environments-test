@@ -124,7 +124,7 @@ jobs:
       name: deploy_prod
       needs: [Build]
       environment: 
-        name: Production
+        name: ${{ github.ref == 'refs/heads/main' && 'production' || github.ref == 'refs/heads/staging' && 'staging' || github.ref == 'refs/heads/develop' && 'development' }}
       if: |
        (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/releases/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
        (github.event_name == 'push' && github.ref == 'refs/heads/main')
