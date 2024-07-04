@@ -120,14 +120,14 @@ jobs:
     #     - name: terraform_apply
     #       run:  echo terraform_apply
 
-    deploy_prod:
-      name: deploy_prod
+    deploy:
+      name: deploy
       needs: [Build]
       environment: 
         name: ${{ github.ref == 'refs/heads/main' && 'Production' || github.ref == 'refs/heads/staging' && 'staging' || github.ref == 'refs/heads/develop' && 'dev' }}
       if: |
        (github.event_name == 'workflow_dispatch' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/releases/') || startsWith(github.ref, 'refs/heads/hotfix/'))) ||
-       (github.event_name == 'push' && github.ref == 'refs/heads/main')
+       github.event_name == 'push'
       runs-on: ubuntu-latest
       steps:
          - name: config_microservice
